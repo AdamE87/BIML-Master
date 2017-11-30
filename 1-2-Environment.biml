@@ -1,0 +1,11 @@
+<#@template language="C#" tier="0"#>
+<#@property name="DeployTo" type="String" required="true"#>
+<#@property name="TargetServer" type="String" required="true"#>
+<#@property name="TargetDb" type="String" required="true"#>
+<Biml xmlns="http://schemas.varigence.com/biml.xsd">
+    <Connections>
+        <OleDbConnection Name="KickstartDb" ConnectionString="Provider=SQLNCLI11;Server=SQL04;Initial Catalog=KickstartDb;Integrated Security=SSPI;"/>
+        <OleDbConnection Name="Master" ConnectionString="Provider=SQLNCLI11;Server=<#=DeployTo#>;Initial Catalog=Master;Integrated Security=SSPI;"/>
+		<OleDbConnection Name="Target" ConnectionString="Provider=SQLNCLI11;Server=<#=TargetServer#>;Initial Catalog=<#=TargetDb#>;Integrated Security=SSPI;"/>
+    </Connections>
+</Biml>

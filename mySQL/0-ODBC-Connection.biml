@@ -1,0 +1,14 @@
+<#@property name="serverName" type="String" required="true"#>
+<#@property name="databaseName" type="String" required="true"#>
+<#@property name="connectionName" type="String" required="false"#>
+<#
+	string cnxnName = connectionName != "" ? connectionName : databaseName;
+#>
+<CustomSsisConnection Name="<#=cnxnName#>" CreationName="DevartMySql" ObjectData="&lt;MySqlConnectionManager&gt;&#xD;&#xA;  &lt;ConnectionString&gt;User Id=root;Host=<#=serverName#>;Database=<#=databaseName#>;Unicode=True;Persist Security Info=True;Default Command Timeout=6000;Connection Timeout=6000;Connection Lifetime=6000;HTTP Max Connection Age=6000;HTTP Keep Alive=6000&lt;/ConnectionString&gt;&#xD;&#xA;  &lt;Password Sensitive=&quot;0&quot; Encrypted=&quot;0&quot;&gt;Tr@nsf0rmers&lt;/Password&gt;&#xD;&#xA;&lt;/MySqlConnectionManager&gt;" />
+<OdbcConnection Name="odbc-<#=cnxnName#>" ConnectionString="Driver={MySQL ODBC 5.3 Unicode Driver}">
+	<Expressions>
+		<Expression PropertyName="ConnectionString">
+			"Driver={MySQL ODBC 5.3 Unicode Driver};server=<#=serverName#>;database=<#=databaseName#>;user=root;password=Tr@nsf0rmers;option=3"
+		</Expression>
+	</Expressions>
+</OdbcConnection>

@@ -1,0 +1,58 @@
+<#@property name="ConnectionName" type="String"#>
+<ExecuteSQL Name="ES-SQLAudit-Start" ConnectionName="<#=ConnectionName#>">
+	<Parameters>
+		<Parameter Name="0" DataType="Int32" VariableName="User.ParentAuditKey"></Parameter>
+		<Parameter Name="1" DataType="AnsiString" VariableName="User.tableName"></Parameter>
+		<Parameter Name="2" DataType="AnsiString" VariableName="System.PackageName"></Parameter>
+		<Parameter Name="3" DataType="Guid" VariableName="System.PackageID"></Parameter>
+		<Parameter Name="4" DataType="Guid" VariableName="System.VersionGUID"></Parameter>
+		<Parameter Name="5" DataType="Int16" VariableName="System.VersionMajor"></Parameter>
+		<Parameter Name="6" DataType="Int16" VariableName="System.VersionMinor"></Parameter>
+		<Parameter Name="7" DataType="Date" VariableName="System.StartTime"></Parameter>
+		<Parameter Name="8" DataType="Guid" VariableName="System.ExecutionInstanceGUID"></Parameter>
+		<Parameter Name="9" DataType="Int32" VariableName="User.rowCount"></Parameter>
+		<Parameter Name="10" DataType="AnsiString" VariableName="User.tableName"></Parameter>
+		<Parameter Name="11" DataType="Date" VariableName="System.StartTime"></Parameter>
+	</Parameters>
+	<DirectInput>
+		INSERT INTO [dbo].[ETLAudit]
+		(ParentAuditKey
+		,[TableName]
+		,[PkgName]
+		,[PkgGUID]
+		,[PkgVersionGUID]
+		,[PkgVersionMajor]
+		,[PkgVersionMinor]
+		,[ExecStartDT]
+		,[ExecStopDT]
+		,[ExecutionInstanceGUID]
+		,[ExtractRowCount]
+		,[InsertRowCount]
+		,[UpdateRowCount]
+		,[ErrorRowCount]
+		,[TableInitialRowCount]
+		,[TableFinalRowCount]
+		,[TableMaxDateTime]
+		,[SuccessfulProcessingInd])
+		VALUES
+		(?
+		,?
+		,? 
+		,? 
+		,? 
+		,? 
+		,? 
+		,?
+		,NULL
+		, ?
+		,NULL
+		,0
+		,0
+		,NULL
+		,? 
+		,NULL
+		,NULL
+		,'N')
+		SELECT AuditKey from [dbo].[ETLAudit] where TableName = ? and ExecStartDT = ?
+	</DirectInput>
+</ExecuteSQL>

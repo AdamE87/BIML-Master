@@ -1,0 +1,56 @@
+<#@ import namespace="System.Collections.Generic"#>
+<#@ property name="TableName" type="String" required="True"#>
+<#@ property name="DatabaseConnection" type="String" required="True"#>
+<#@ property name="OutputColumns" type="Dictionary<string,string>" required="True"#>
+<#@ property name="MappingColumns" type="Dictionary<string,string>" required="True"#>
+<#@ property name="InputPath" type="String" required="True"#>
+<#@ property name="ErrorOutput" type="Boolean" required="True"#>
+<CustomComponent Name="DML-<#=TableName#>" ComponentTypeName="Devart.SSIS.MySql.MySqlLookup, Devart.SSIS.MySql.130, Version=1.0.0.0, Culture=neutral, PublicKeyToken=09af7300eec23701">
+	<CustomProperties>
+        <CustomProperty Name="DesignObject" DataType="Empty" TypeConverter="NOTBROWSABLE"></CustomProperty>
+        <CustomProperty Name="Retry Count" DataType="Int32" Description="Number of retries to call operation.">5</CustomProperty>
+        <CustomProperty Name="Retry Interval" DataType="Int32" Description="Waiting second before next retry.">1</CustomProperty>
+        <CustomProperty Name="Lookup Object" DataType="String" TypeConverter="Devart.SSIS.Common.Design.TablesListConverter, Devart.SSIS.MySql.130, Version=1.0.0.0, Culture=neutral, PublicKeyToken=09af7300eec23701" Description="The name of the reference Object."><#=TableName#></CustomProperty>
+        <CustomProperty Name="BatchSize" DataType="Int32" Description="The number of objects in the batch query.">150</CustomProperty>
+        <CustomProperty Name="CacheSize" DataType="Int32" Description="The number of cached objects.">2000</CustomProperty>
+        <CustomProperty Name="NoMatchAsError" DataType="Boolean" Description="Redirect no matching rows to error output."><#=ErrorOutput#></CustomProperty>
+        <CustomProperty Name="UseFirstMatchInMultipleResults" DataType="Boolean" Description="Determines whether to pick the first row if more than one match is found or redirect the input row to the error output with an error message.">true</CustomProperty>
+        <CustomProperty Name="UseNullsIfNoMatchFound" DataType="Boolean" Description="Determines whether to set null values or create no lookup relationship between the objects if no matches are found.">false</CustomProperty>
+        <CustomProperty Name="CaseInsensitiveLookup" DataType="Boolean" Description="Determines whether to use case insensitive comparison in Lookup">false</CustomProperty>
+	</CustomProperties>
+    <InputPaths>
+		<InputPath OutputPathName="<#=InputPath#>" HasSideEffects="true" Identifier="Input">
+			<InputColumns>
+				<#foreach(KeyValuePair<string,string> mc in MappingColumns){#>
+                <InputColumn SourceColumn="<#=mc.Key#>">
+                    <CustomProperties>
+						<CustomProperty Name="ReferenceColumn" DataType="String" TypeConverter="Devart.SSIS.Common.LookupComponent+SourceColumnList, Devart.SSIS.MySql.130, Version=1.0.0.0, Culture=neutral, PublicKeyToken=09af7300eec23701" Description="Specifies the column in the reference table for lookup condition"><#=mc.Value#></CustomProperty>
+					</CustomProperties>
+				</InputColumn>
+				<#}#>
+			</InputColumns>
+		</InputPath>
+    </InputPaths>
+    <OutputPaths>
+		<OutputPath Name="Lookup Match Output" SynchronousInput="Input" ExclusionGroup="1">
+			<OutputColumns>
+				<#foreach(KeyValuePair<string,string> oc in OutputColumns){#>
+				<OutputColumn Name="<#=oc.Value#>">
+					<CustomProperties>
+						<Property Name="SourceColumn" DataType="String" TypeConverter="Devart.SSIS.Common.LookupComponent+SourceColumnList, Devart.SSIS.MySql.130, Version=1.0.0.0, Culture=neutral, PublicKeyToken=09af7300eec23701" Description="Specifies the column in the reference table to copy data from."><#=oc.Key#></Property>
+					</CustomProperties
+				</OutputColumn>
+				<#}#>
+			</OutputColumns>
+		</OutputPath>
+		<OutputPath Name="Lookup No Match Output" SynchronousInput="Input" ExclusionGroup="1" />
+		<OutputPath Name="Lookup Error Output" IsErrorOutput="true" SynchronousInput="Input" ExclusionGroup="1">
+			<OutputColumns>
+				<OutputColumn Name="ErrorDescription" Length="1024" DataType="String" />
+			</OutputColumns>
+		</OutputPath>
+    </OutputPaths>
+    <Connections>
+        <Connection Name="Devart MySql" ConnectionName="<#=DatabaseConnection#>" />
+    </Connections>
+</CustomComponent>

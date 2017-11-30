@@ -1,0 +1,30 @@
+<#@ import namespace="System.Collections.Generic"#>
+<#@ property name="ConnectionName" type="String" required="True"#>
+<#@ property name="TasksToWaitFor" type="List<string>" required="False"#>
+<ExecuteSQL Name="ES-SQL Audit End" ConnectionName="<#=ConnectionName#>">
+	<#if(TasksToWaitFor != null){#>
+	<PrecedenceConstraints>
+		<Inputs>
+		<#foreach(string task in TasksToWaitFor){#>
+			<Input EvaluationOperation="Constraint" EvaluationValue="Success" OutputPathName="<#=task#>.Output"></Input>
+		<#}#>
+		</Inputs>
+	</PrecedenceConstraints>   
+	<#}#>
+    <DirectInput></DirectInput>
+	<Expressions>
+		<Expression PropertyName="SqlStatementSource">
+			"UPDATE ETLAudit
+			SET ExecStopDT = NOW()
+				,ExtractRowCnt = " + (DT_STR,255,1252)@[User::rowCountExtract] + "
+				,InsertRowCnt=" + (DT_STR,255,1252)@[User::rowCountInsert] + "
+				,UpdateRowCnt=" + (DT_STR,255,1252)@[User::rowCountUpdate] + "
+				,TableFinalRowCnt = " + (DT_STR,255,1252)@[User::rowCount] + "
+				,ErrorRowCnt = " + (DT_STR,255,1252)@[User::rowCountError] + "
+				,SuccessfulProcessingInd='Y'
+				,ParentAuditKey = CASE WHEN ParentAuditKey = -1 THEN AuditKey ELSE ParentAuditKey END
+			WHERE AuditKey = " + (DT_STR,255,1252)@[User::auditKey] + "
+			;"
+		</Expression>
+	</Expressions>
+</ExecuteSQL>

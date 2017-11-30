@@ -1,0 +1,36 @@
+<#@import namespace="System.Collections.Generic"#>
+<#@property name="ConnectionName" type="String"#>
+<#@property name="HasMultipleInputs" type="Boolean" required="true"#>
+<#@property name="Precedences" type="List<string>" required="false">
+<ExecuteSQL Name="ES-SQLAudit-End" ConnectionName="<#=ConnectionName#>">
+	<#if(HasMultipleInputs==true){#>
+	<PrecedenceConstraints>
+		<Inputs>
+			<#foreach(string precedence in Precedences){#>
+			<Input OutputPathName="<#=precedence#>"></Input>
+			<#}#>
+		</Inputs>
+	</PrecedenceConstraints>
+	<#}#>
+	<Parameters>
+		<Parameter Name="0" DataType="Int32" VariableName="User.rowCountExtract"></Parameter>
+		<Parameter Name="1" DataType="Int32" VariableName="User.rowCountInsert"></Parameter>
+		<Parameter Name="2" DataType="Int32" VariableName="User.rowCountUpdate"></Parameter>
+		<Parameter Name="3" DataType="Int32" VariableName="User.rowCount"></Parameter>
+		<Parameter Name="4" DataType="Int32" VariableName="User.rowCountError"></Parameter>
+		<Parameter Name="5" DataType="Int32" VariableName="User.auditKey"></Parameter>
+	</Parameters>
+	<DirectInput>
+        UPDATE [dbo].[ETLAudit]
+		SET ExecStopDT = SYSDATETIME()
+		   ,ExtractRowCount = ?
+		   ,InsertRowCount=?
+		   ,UpdateRowCount=?
+		   ,TableFinalRowCount = ?
+		   ,ErrorRowCount = ?
+		   ,SuccessfulProcessingInd='Y'
+		   ,ParentAuditKey = CASE WHEN ParentAuditKey = -1 THEN AuditKey ELSE ParentAuditKey END
+		WHERE AuditKey = ?
+		;
+	</DirectInput>
+</ExecuteSQL>
