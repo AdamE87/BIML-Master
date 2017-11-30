@@ -3,7 +3,7 @@
 <#@import namespace="System.Data"#>
 <#
     string cnxn = RootNode.OleDbConnections["KickstartDb"].ConnectionString;
-	string bimlDir = "W:\\IT\\ETL$\\BIML\\";
+	string bimlDir = @"W:\IT\ETL$\BIML\";
 #>
 <Biml xmlns="http://schemas.varigence.com/biml.xsd">
     <FileFormats>
@@ -139,7 +139,7 @@
                             <RowCount Name="RC Error" VariableName="User.rowCountError">
 							    <InputPath OutputPathName="ConvertData.Error"></InputPath>
     						</RowCount>
-    						<OleDbDestination Name="<#=tbl.Name#>_Errors" ConnectionName="<#=db.Name#>" AlwaysUseDefaultCodePage="true" DefaultCodePage="65001">
+    						<OleDbDestination Name="<#=tbl.Name#>_Errors" ConnectionName="<#=db.Name#>" AlwaysUseDefaultCodePage="true" DefaultCodePage="<#=tbl.GetTag("CodePage")#>">
     							<ExternalTableOutput Table="<#=tbl.Name#>_Error"></ExternalTableOutput>
     							<InputPath OutputPathName="RC Error.Output"></InputPath>
     						</OleDbDestination>
@@ -186,7 +186,7 @@
                         <Result Name="0" VariableName="User.rowCount"></Result>
                     </Results>
                 </ExecuteSQL>
-                <#=CallBimlScript(bimlDir + "0-ES-SQLAudit-End.biml",db.Name,false,null)#>
+                <#=CallBimlScript(bimlDir + "0-ES-SQLAudit-End.biml",db.Name,false)#>
             </Tasks>
         </Package>
             <#}#>

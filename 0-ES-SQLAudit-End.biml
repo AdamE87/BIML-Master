@@ -1,13 +1,13 @@
 <#@import namespace="System.Collections.Generic"#>
-<#@property name="ConnectionName" type="String"#>
-<#@property name="HasMultipleInputs" type="Boolean" required="true"#>
+<#@property name="ConnectionName" type="String" required="true"#>
+<#@property name="HasMultipleInputs" type="bool" required="true"#>
 <#@property name="Precedences" type="List<string>" required="false">
 <ExecuteSQL Name="ES-SQLAudit-End" ConnectionName="<#=ConnectionName#>">
 	<#if(HasMultipleInputs==true){#>
 	<PrecedenceConstraints>
 		<Inputs>
 			<#foreach(string precedence in Precedences){#>
-			<Input OutputPathName="<#=precedence#>"></Input>
+			<Input OutputPathName="<#=precedence#>.Output"></Input>
 			<#}#>
 		</Inputs>
 	</PrecedenceConstraints>
