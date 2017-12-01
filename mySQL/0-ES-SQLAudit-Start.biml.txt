@@ -1,0 +1,67 @@
+<#@ import namespace="System.Collections.Generic"#>
+<#@ property name="ConnectionName" type="String" required="True"#>
+<#@ property name="TasksToWaitFor" type="List<string>" required="False"#>
+<#@ property name="AddPrecedence" type="bool" required="True"#>
+<ExecuteSQL Name="ES-SQL Audit Start" ConnectionName="<#=ConnectionName#>">
+    <DirectInput></DirectInput>
+	<Expressions>
+		<Expression PropertyName="SqlStatementSource">
+		"INSERT INTO [dbo].[ETLAudit]
+		(ParentAuditKey
+		,[TableName]
+		,[PkgName]
+		,[PkgGUID]
+		,[PkgVersionGUID]
+		,[PkgVersionMajor]
+		,[PkgVersionMinor]
+		,[ExecStartDT]
+		,[ExecStopDT]
+		,[ExecutionInstanceGUID]
+		,[ExtractRowCount]
+		,[InsertRowCount]
+		,[UpdateRowCount]
+		,[ErrorRowCount]
+		,[TableInitialRowCount]
+		,[TableFinalRowCount]
+		,[TableMaxDateTime]
+		,[SuccessfulProcessingInd])
+		VALUES
+		(" + (DT_STR,255,1252)@[User::ParentAuditKey] + "
+		,'" + @[User::tableName] + "'
+		,'" + @[System::PackageName] + "'
+		,'{"+ @[System::PackageID] + "}' 
+		,'{"+ @[System::VersionGUID] + "}'  
+		," + (DT_STR,255,1252)@[System::VersionMajor] + "
+		," + (DT_STR,255,1252)@[System::VersionMinor] + "
+		,'{"+ @[System::StartTime] + "}'  
+		,NULL
+		,'{"+ @[System::ExecutionInstanceGUID] + "}'
+		,NULL
+		,0
+		,0
+		,NULL
+		," + (DT_STR,255,1252)@[User::rowCount] + " 
+		,NULL
+		,NULL
+		,'N')
+		;
+		</Expression>
+	</Expressions>
+</ExecuteSQL>
+<ExecuteSQL Name="Get ID" ConnectionName="<#=ConnectionName#>">
+	<#if(AddPrecedence == true){#>
+	<PrecedenceConstraints LogicalType="And">
+                <Inputs>
+                	<Input EvaluationOperation="Constraint" EvaluationValue="Success" OutputPathName="ES-SQL Audit Start.Output"></Input>
+        	</Inputs>
+        </PrecedenceConstraints>
+	<#}#>
+	<DirectInput></DirectInput>
+	<Expressions>
+		<Expression PropertyName="SqlStatementSource">
+			SELECT AuditKey 
+			FROM [dbo].[ETLAudit] 
+			WHERE TableName = '" + @[User::tableName] +"' and ExecStartDT = '" + @[System::StartDate] + "';"
+		</Expression>
+	</Expressions>
+</ExecuteSQL>
