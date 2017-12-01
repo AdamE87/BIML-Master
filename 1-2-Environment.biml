@@ -6,6 +6,6 @@
     <Connections>
         <OleDbConnection Name="KickstartDb" ConnectionString="Provider=SQLNCLI11;Server=SQL04;Initial Catalog=KickstartDb;Integrated Security=SSPI;"/>
         <OleDbConnection Name="Master" ConnectionString="Provider=SQLNCLI11;Server=<#=DeployTo#>;Initial Catalog=Master;Integrated Security=SSPI;"/>
-		<OleDbConnection Name="Target" ConnectionString="Provider=SQLNCLI11;Server=<#=TargetServer#>;Initial Catalog=<#=TargetDb#>;Integrated Security=SSPI;"/>
+	<OleDbConnection Name="Target" ConnectionString="Provider=SQLNCLI11;Server=<#=TargetServer#>;Initial Catalog=<#=TargetDb#>;Integrated Security=SSPI;"/>
     </Connections>
 </Biml>

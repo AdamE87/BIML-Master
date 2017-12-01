@@ -1,5 +1,5 @@
 <#@property name="TableName" type="String" required="true"#>
-<#@property name="IsMasterPackage" type="Boolean" required="true"#>
+<#@property name="IsMasterPackage" type="bool" required="true"#>
 <#
 	string pak = (IsMasterPackage == true ? "-1" : "@[$Package::ParentAuditKey]");
 #>

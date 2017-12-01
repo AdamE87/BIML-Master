@@ -1,7 +1,7 @@
 <#@import namespace="System.Collections.Generic"#>
 <#@property name="ConnectionName" type="String" required="true"#>
 <#@property name="HasMultipleInputs" type="bool" required="true"#>
-<#@property name="Precedences" type="List<string>" required="false">
+<#@property name="Precedences" type="List<string>" required="false"#>
 <ExecuteSQL Name="ES-SQLAudit-End" ConnectionName="<#=ConnectionName#>">
 	<#if(HasMultipleInputs==true){#>
 	<PrecedenceConstraints>
