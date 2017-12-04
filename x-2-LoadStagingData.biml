@@ -3,7 +3,7 @@
 <#@import namespace="System.Data"#>
 <#
     string cnxn = RootNode.OleDbConnections["KickstartDb"].ConnectionString;
-	string bimlDir = @"W:\IT\ETL$\BIML\";
+	string bimlDir = @"W:\IT$\DATA MANAGEMENT\03_PROJECT WORK\01_CENTRAL_PROJECTS\KICKSTART\";
 #>
 <Biml xmlns="http://schemas.varigence.com/biml.xsd">
     <FileFormats>

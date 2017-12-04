@@ -7,7 +7,7 @@
 <#@ property name="ErrorOutput" type="Boolean" required="True"#>
 <CustomComponent Name="DML-<#=TableName#>" ComponentTypeName="Devart.SSIS.MySql.MySqlLookup, Devart.SSIS.MySql.130, Version=1.0.0.0, Culture=neutral, PublicKeyToken=09af7300eec23701">
 	<CustomProperties>
-        <CustomProperty Name="DesignObject" DataType="Empty" TypeConverter="NOTBROWSABLE"></CustomProperty>
+        <CustomProperty Name="DesignObject" DataType="String" TypeConverter="NOTBROWSABLE"></CustomProperty>
         <CustomProperty Name="Retry Count" DataType="Int32" Description="Number of retries to call operation.">5</CustomProperty>
         <CustomProperty Name="Retry Interval" DataType="Int32" Description="Waiting second before next retry.">1</CustomProperty>
         <CustomProperty Name="Lookup Object" DataType="String" TypeConverter="Devart.SSIS.Common.Design.TablesListConverter, Devart.SSIS.MySql.130, Version=1.0.0.0, Culture=neutral, PublicKeyToken=09af7300eec23701" Description="The name of the reference Object."><#=TableName#></CustomProperty>
