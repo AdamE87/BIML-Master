@@ -1,10 +1,10 @@
 <#@property name="TableName" type="String" required="true"#>
-<#@property name="IsMasterPackage" type="bool" required="true"#>
+<#@property name="IsChildPackage" type="bool" required="true"#>
 <#
-	string pak = (IsMasterPackage == true ? "-1" : "@[$Package::ParentAuditKey]");
+	string pak = (IsChildPackage == false ? "-1" : "@[$Package::ParentAuditKey]");
 #>
 <Variable Name="auditKey" DataType="Int32" Namespace="User">0</Variable>
-<Variable Name="ParentAuditKey" DataType="Int32" EvaluateAsExpression="<#=!IsMasterPackage#>" Namespace="User"><#=pak#></Variable>
+<Variable Name="ParentAuditKey" DataType="Int32" EvaluateAsExpression="<#=IsChildPackage#>" Namespace="User"><#=pak#></Variable>
 <Variable Name="rowCount" DataType="Int32" Namespace="User">0</Variable>
 <Variable Name="rowCountExtract" DataType="Int32" Namespace="User">0</Variable>
 <Variable Name="rowCountInsert" DataType="Int32" Namespace="User">0</Variable>
