@@ -28,13 +28,13 @@
 		(" + (DT_STR,255,1252)@[User::ParentAuditKey] + "
 		,'" + @[User::tableName] + "'
 		,'" + @[System::PackageName] + "'
-		,'{"+ @[System::PackageID] + "}' 
-		,'{"+ @[System::VersionGUID] + "}'  
+		,'"+ (DT_STR,38,1252)@[System::PackageID] + "' 
+		,'"+ (DT_STR,38,1252)@[System::VersionGUID] + "'  
 		," + (DT_STR,255,1252)@[System::VersionMajor] + "
 		," + (DT_STR,255,1252)@[System::VersionMinor] + "
-		,'{"+ @[System::StartTime] + "}'  
+		,'"+ (DT_STR,50,1252)@[System::StartTime] + "'  
 		,NULL
-		,'{"+ @[System::ExecutionInstanceGUID] + "}'
+		,'"+ (DT_STR,38,1252)@[System::ExecutionInstanceGUID] + "'
 		,NULL
 		,0
 		,0
@@ -43,7 +43,7 @@
 		,NULL
 		,NULL
 		,'N')
-		;
+		;"
 		</Expression>
 	</Expressions>
 </ExecuteSQL>
@@ -58,9 +58,9 @@
 	<DirectInput></DirectInput>
 	<Expressions>
 		<Expression PropertyName="SqlStatementSource">
-			SELECT AuditKey 
+			"SELECT AuditKey 
 			FROM [dbo].[ETLAudit] 
-			WHERE TableName = '" + @[User::tableName] +"' and ExecStartDT = '" + @[System::StartDate] + "';"
+			WHERE TableName = '" + @[User::tableName] +"' and ExecStartDT = '" + (DT_STR,50,1252)@[System::StartTime] + "';"
 		</Expression>
 	</Expressions>
 </ExecuteSQL>
