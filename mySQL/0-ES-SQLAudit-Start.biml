@@ -1,6 +1,5 @@
 <#@ import namespace="System.Collections.Generic"#>
 <#@ property name="ConnectionName" type="String" required="True"#>
-<#@ property name="TasksToWaitFor" type="List<string>" required="False"#>
 <#@ property name="AddPrecedence" type="bool" required="True"#>
 <ExecuteSQL Name="ES-SQL Audit Start" ConnectionName="<#=ConnectionName#>">
     <DirectInput></DirectInput>

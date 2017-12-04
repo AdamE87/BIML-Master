@@ -1,8 +1,0 @@
-<#@template language="C#" tier="0"#>
-<Biml xmlns="http://schemas.varigence.com/biml.xsd">
-    <Connections>
-        <OleDbConnection Name="KickstartDb" ConnectionString="Provider=SQLNCLI11;Server=SQL04;Initial Catalog=KickstartDb;Integrated Security=SSPI;"/>
-        <OleDbConnection Name="Master" ConnectionString="Provider=SQLNCLI11;Server=SQL04;Initial Catalog=Master;Integrated Security=SSPI;"/>
-        <OleDbConnection Name="STAGING_WM_SAP" ConnectionString="Provider=SQLNCLI11;Server=SQL04;Initial Catalog=STAGING_WM_SAP;Integrated Security=SSPI;"/>
-    </Connections>
-</Biml>

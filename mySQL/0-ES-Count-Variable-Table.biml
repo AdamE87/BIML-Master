@@ -1,0 +1,14 @@
+<#@ import namespace="System.Collections.Generic"#>
+<#@ property name="TaskName" type="String" required="True"#>
+<#@ property name="ConnectionName" type="String" required="True"#>
+<ExecuteSQL Name="ES-Count-<#=TaskName#>" ConnectionName="<#=ConnectionName#>">
+	<Results>
+		<Result Name="1" VariableName="User.rowCount"></Result>
+	</Results>
+    <DirectInput></DirectInput>
+	<Expressions>
+		<Expression PropertyName="SqlStatementSource">
+			"SELECT COUNT(1) FROM " + @[User::tableName]
+		</Expression>
+	</Expressions>
+</ExecuteSQL>

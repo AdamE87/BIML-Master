@@ -38,7 +38,7 @@
 				<OutputColumn Name="<#=oc.Value#>">
 					<CustomProperties>
 						<Property Name="SourceColumn" DataType="String" TypeConverter="Devart.SSIS.Common.LookupComponent+SourceColumnList, Devart.SSIS.MySql.130, Version=1.0.0.0, Culture=neutral, PublicKeyToken=09af7300eec23701" Description="Specifies the column in the reference table to copy data from."><#=oc.Key#></Property>
-					</CustomProperties
+					</CustomProperties>
 				</OutputColumn>
 				<#}#>
 			</OutputColumns>
